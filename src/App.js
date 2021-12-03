@@ -11,6 +11,13 @@ export const ACTIONS = {
   EVALUATE: 'evaluate',
 };
 
+const INITIAL_STATE = {
+  overwrite: false,
+  operation: null,
+  currentOperand: null,
+  previousOperand: null,
+};
+
 function reducer(state, { type, payload }) {
   switch (type) {
     case ACTIONS.ADD_DIGIT:
@@ -93,6 +100,7 @@ function reducer(state, { type, payload }) {
         currentOperand: evaluate(state),
       };
     default:
+      return state;
   }
 }
 
@@ -116,6 +124,7 @@ function evaluate({ currentOperand, previousOperand, operation }) {
       computation = prev / current;
       break;
     default:
+      return;
   }
   return computation.toString();
 }
@@ -133,7 +142,7 @@ function formatOperand(operand) {
 function App() {
   const [{ currentOperand, previousOperand, operation }, dispatch] = useReducer(
     reducer,
-    {}
+    INITIAL_STATE
   );
 
   return (
